@@ -49,6 +49,14 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
+(setq gptel-backend
+      (gptel-make-openai "9router"
+        :host "ai.mqdd.my.id"
+        :endpoint "/v1/chat/completions"
+        :stream t
+        :key (getenv "NINEROUTER_API_KEY")
+        :models '(Com)))
+
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `with-eval-after-load' block, otherwise Doom's defaults may override your
