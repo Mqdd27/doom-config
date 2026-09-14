@@ -32,7 +32,30 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
+
+;; Persist last selected theme
+(defvar mqdd-theme-file
+  (expand-file-name ".last-theme" doom-user-dir))
+
+(defun mqdd-read-last-theme ()
+  (when (file-readable-p mqdd-theme-file)
+    (with-temp-buffer
+      (insert-file-contents mqdd-theme-file)
+      (read (current-buffer)))))
+
+(defun mqdd-save-current-theme (&rest _)
+  (when-let ((theme (car custom-enabled-themes)))
+    (with-temp-file mqdd-theme-file
+      (prin1 theme (current-buffer)))))
+
+(setq doom-theme
+      (or (mqdd-read-last-theme)
+          'doom-one))
+
+(with-eval-after-load 'consult
+  (advice-add 'consult-theme :after #'mqdd-save-current-theme))
+
 ;; Specify both a dark and light theme, like so and Doom will choose which one
 ;; to load based on your system light/dark setting:
 ;;
