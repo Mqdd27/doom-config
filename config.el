@@ -80,7 +80,8 @@
         :key (getenv "NINEROUTER_API_KEY")
         :models '(Com)))
 
-
+;; set timeout on ssh
+(setq tramp-connection-timeout 30)
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `with-eval-after-load' block, otherwise Doom's defaults may override your
 ;; settings. E.g.
@@ -109,5 +110,5 @@
 ;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
 ;; etc).
 ;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+
 ;; they are implemented.
