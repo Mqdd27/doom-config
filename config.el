@@ -112,3 +112,10 @@
 ;;
 
 ;; they are implemented.
+
+;; Bindings
+
+;; Open Dashboard
+(map! :leader
+      :desc "Open Doom Dashboard"
+      "d s" #'+dashboard/open)
