@@ -125,6 +125,16 @@
   (interactive)
   (find-file "~/.config/doom/ideas.org"))
 
+;; Dashboard
+(add-to-list '+dashboard-menu-sections
+             '("Ideas"
+               :icon (nerd-icons-octicon "nf-oct-light_bulb"
+                                         :face '+dashboard-menu-title)
+               :key "i"
+               :action mqdd/open-ideas))
+
+;; SPC i i
 (map! :leader
-      :desc "Open ideas.org"
-      "i i" #'mqdd/open-ideas)
+      (:prefix ("i" . "ideas")
+       :desc "Open ideas.org"
+       "i" #'mqdd/open-ideas))
