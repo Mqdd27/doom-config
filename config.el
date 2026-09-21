@@ -119,3 +119,12 @@
 (map! :leader
       :desc "Open Doom Dashboard"
       "d s" #'+dashboard/open)
+
+
+(defun mqdd/open-ideas ()
+  (interactive)
+  (find-file "~/.config/doom/ideas.org"))
+
+(map! :leader
+      :desc "Open ideas.org"
+      "i i" #'mqdd/open-ideas)
