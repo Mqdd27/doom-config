@@ -84,6 +84,23 @@
 (setq tramp-connection-timeout 30)
 
 ;; =========================================
+;; EPUB reader
+;; =========================================
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
+;; nov.el renders text to a fixed window width; zooming doesn't reflow it,
+;; so text gets cut off until a manual `g' (nov-render-document). Auto-reflow instead.
+(defun mqdd/nov-reflow-after-zoom (&rest _)
+  (when (derived-mode-p 'nov-mode)
+    (nov-render-document)))
+(advice-add 'text-scale-adjust :after #'mqdd/nov-reflow-after-zoom)
+
+;; =========================================
+;; Buffer zen/fullscreen toggle (like Zed's Shift+Escape)
+;; =========================================
+(map! "S-<escape>" #'+zen/toggle)
+
+;; =========================================
 ;; Copilot (AI autocomplete)
 ;; =========================================
 (use-package! copilot
@@ -93,6 +110,13 @@
          ("C-TAB" . copilot-accept-completion-by-word)
          ("C-n"   . copilot-next-completion)
          ("C-p"   . copilot-previous-completion)))
+
+
+;; =========================================
+;; toggle webmode for blade.php files
+;; =========================================
+(use-package! web-mode
+  :mode ("\\.blade\\.php\\'" . web-mode))
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `with-eval-after-load' block, otherwise Doom's defaults may override your
 ;; settings. E.g.
@@ -136,6 +160,10 @@
   (interactive)
   (find-file "~/.config/doom/ideas.org"))
 
+(defun mqdd/open-books ()
+  (interactive)
+  (dired "~/Library/Mobile Documents/com~apple~CloudDocs/Books"))
+
 ;; Dashboard
 (add-to-list '+dashboard-menu-sections
              '("Ideas"
@@ -144,11 +172,18 @@
                :key "i"
                :action mqdd/open-ideas))
 
-;; SPC i i
+(add-to-list '+dashboard-menu-sections
+             '("Books"
+               :icon (nerd-icons-octicon "nf-oct-book"
+                                         :face '+dashboard-menu-title)
+               :key "b"
+               :action mqdd/open-books))
+
+;; SPC i i / SPC i b
 (map! :leader
       (:prefix ("i" . "ideas")
-       :desc "Open ideas.org"
-       "i" #'mqdd/open-ideas))
+       :desc "Open ideas.org" "i" #'mqdd/open-ideas
+       :desc "Open Books folder" "b" #'mqdd/open-books))
 
 
 

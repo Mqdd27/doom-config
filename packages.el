@@ -13,6 +13,8 @@
 ;; (package! some-package)
 (package! gptel)
 (package! copilot :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+(package! nov)
+(package! web-mode)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
