@@ -138,3 +138,48 @@
       (:prefix ("i" . "ideas")
        :desc "Open ideas.org"
        "i" #'mqdd/open-ideas))
+
+
+
+;; =========================================
+;; Email / mu4e
+;; =========================================
+
+(setq user-full-name "Ahmad Miqdad"
+      user-mail-address "ahmadmiqdad27@gmail.com")
+
+(after! mu4e
+
+  ;; Lokasi Maildir
+  (setq mu4e-maildir "~/Mail/gmail")
+
+  ;; Sync Gmail menggunakan mbsync
+  (setq mu4e-get-mail-command "mbsync gmail")
+
+  ;; Auto sync setiap 5 menit
+  (setq mu4e-update-interval 300)
+
+  ;; Dibutuhkan supaya mbsync tetap sinkron ketika file dipindahkan
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; Optimasi Gmail
+  (setq mu4e-index-cleanup nil
+        mu4e-index-lazy-check t)
+
+  ;; Gmail sudah menyimpan email terkirim sendiri
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; Folder Gmail
+  (set-email-account! "gmail"
+    '((mu4e-sent-folder   . "/[Gmail]/Sent Mail")
+      (mu4e-drafts-folder . "/[Gmail]/Drafts")
+      (mu4e-trash-folder  . "/[Gmail]/Trash")
+      (mu4e-refile-folder . "/[Gmail]/All Mail")
+      (user-mail-address  . "ahmadmiqdad27@gmail.com"))
+    t)
+
+  ;; Kirim email lewat msmtp
+  (setq sendmail-program (executable-find "msmtp")
+        message-send-mail-function #'message-send-mail-with-sendmail
+        message-sendmail-f-is-evil t
+        message-sendmail-extra-arguments '("--read-envelope-from")))
