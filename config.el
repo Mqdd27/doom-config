@@ -82,6 +82,17 @@
 
 ;; set timeout on ssh
 (setq tramp-connection-timeout 30)
+
+;; =========================================
+;; Copilot (AI autocomplete)
+;; =========================================
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+         ("<tab>" . copilot-accept-completion)
+         ("C-TAB" . copilot-accept-completion-by-word)
+         ("C-n"   . copilot-next-completion)
+         ("C-p"   . copilot-previous-completion)))
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `with-eval-after-load' block, otherwise Doom's defaults may override your
 ;; settings. E.g.
