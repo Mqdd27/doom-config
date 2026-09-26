@@ -194,6 +194,30 @@
 (setq user-full-name "Ahmad Miqdad"
       user-mail-address "ahmadmiqdad27@gmail.com")
 
+;; =========================================
+;; Auto-sync .org files to Apple Notes (via watch_and_sync.sh)
+;; =========================================
+(defun mqdd/org-watch-apple-notes ()
+  "Start watch_and_sync.sh for this org file, once, if not already running."
+  (interactive)
+  (when buffer-file-name
+    (let* ((proc-name (concat "org-to-apple-notes:" buffer-file-name))
+           (proc (get-process proc-name))
+           (process-environment
+            (cons "PATH=/Users/macbook/.pyenv/shims:/opt/homebrew/bin:/usr/bin:/bin"
+                  process-environment)))
+      (if (process-live-p proc)
+          (message "org-to-apple-notes: already watching %s" buffer-file-name)
+        (start-process proc-name "*org-to-apple-notes*"
+                        (expand-file-name
+                         "watch_and_sync.sh"
+                         "~/Documents/projects/org-to-apple-notes")
+                        buffer-file-name
+                        (file-name-base buffer-file-name))
+        (message "org-to-apple-notes: started watching %s" buffer-file-name)))))
+
+(add-hook 'org-mode-hook #'mqdd/org-watch-apple-notes)
+
 (after! mu4e
 
   ;; Lokasi Maildir
